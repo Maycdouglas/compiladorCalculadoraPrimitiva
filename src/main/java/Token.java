@@ -11,7 +11,7 @@ public class Token {
 
     private int line, col;
     private int type;
-    private String lexeme;
+    private String lexeme; // sequencia de caracteres da entrada
 
     public Token(int type, String lexeme, int line, int col) {
         this.line = line;
