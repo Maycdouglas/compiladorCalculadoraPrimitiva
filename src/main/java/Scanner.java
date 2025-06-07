@@ -295,6 +295,23 @@ public class Scanner {
         return state == ST_SKIP;
     }
 
+    private char nextChar() throws IOException{
+        int ch = file.read();
+        if(ch == -1) {
+            flag_eof = true;
+            return '\0';
+        }
+        if(ch == 10) {
+            line++;
+            column = 0;
+        } else {
+            column++;
+        }
+
+        buffer.push(new CharInput((char) ch, line, column));
+        return (char) ch;
+    }
+
     private void runAFD(int state) {
 
     }
