@@ -1,4 +1,4 @@
-Compilador de Calculadora Primitiva
+# Compilador de Calculadora Primitiva
 
 Automato:
 
