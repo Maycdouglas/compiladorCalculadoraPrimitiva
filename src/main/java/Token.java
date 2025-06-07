@@ -9,6 +9,16 @@ public class Token {
     public static final int MULT = 6; // *
     public static final int EOF = -1; // end of line
 
+    private int line, col;
+    private int type;
+    private String lexeme;
+
+    public Token(int type, String lexeme, int line, int col) {
+        this.line = line;
+        this.col = col;
+        this.type = type;
+        this.lexeme = lexeme;
+    }
 
 }
 
