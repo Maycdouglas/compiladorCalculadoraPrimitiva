@@ -20,5 +20,20 @@ public class Token {
         this.lexeme = lexeme;
     }
 
+    public String getLexeme() {
+        return lexeme;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public int getCol() {
+        return col;
+    }
+
+    public int getLine() {
+        return line;
+    }
 }
 
