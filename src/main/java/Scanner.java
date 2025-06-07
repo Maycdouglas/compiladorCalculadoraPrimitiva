@@ -249,10 +249,38 @@ public class Scanner {
 
     }
 
-
-
-
-
+    // Identifica qual a categoria do char lido
+    private int chatCat(int ch) {
+        if(flag_eof){
+            return CAT_EOF;
+        }
+        if(ch >= 'a' && ch <= 'z'){
+            return CAT_LETTER;
+        }
+        if(ch >= '0' && ch <= '9'){
+            return CAT_DIGIT;
+        }
+        switch (ch) {
+            case '+':
+                return CAT_PLUS;
+            case '*':
+                return CAT_MULT;
+            case '=':
+                return CAT_EQ;
+            case ';':
+                return CAT_SEMI;
+            case '/':
+                return CAT_DIV;
+            case '\n':
+                return CAT_BKL;
+            case ' ':
+            case '\t':
+            case '\r':
+                return CAT_WS;
+            default:
+                return CAT_ANY;
+        }
+    }
 
     private boolean isFinal(int state){
         return false;
