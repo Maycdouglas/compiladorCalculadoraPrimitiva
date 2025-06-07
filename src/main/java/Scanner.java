@@ -49,7 +49,7 @@ public class Scanner {
     private final int ST_SKIP = 12;
     private final int ST_ERROR = 13;
 
-    private final int ST_BAD = -1;
+    private final int ST_BAD = -2;
 
     // Tipos de Token
     private final int Type[] = {Token.VAR, Token.INT, Token.PLUS, Token.MULT, Token.EQ, Token.SEMI, Token.EOF};
@@ -76,7 +76,7 @@ public class Scanner {
         buffer = new Stack<CharInput>();
 
         // 13 estados (exceto o estado de erro e 11 terminais)
-        transitionFunction = new int [13][11];
+        transitionFunction = new int[13][11];
 
         // Transições do Estado Inicial
         transitionFunction[ST_INIT][CAT_EOF] = ST_EOF;
@@ -222,17 +222,17 @@ public class Scanner {
         transitionFunction[ST_SEMI][CAT_ANY] = ST_ERROR;
 
         // Transições do Estado SKIP
-        transitionFunction[ST_PLUS][CAT_EOF] = ST_ERROR;
-        transitionFunction[ST_PLUS][CAT_LETTER] = ST_ERROR;
-        transitionFunction[ST_PLUS][CAT_DIGIT] = ST_ERROR;
-        transitionFunction[ST_PLUS][CAT_PLUS] = ST_ERROR;
-        transitionFunction[ST_PLUS][CAT_MULT] = ST_ERROR;
-        transitionFunction[ST_PLUS][CAT_EQ] = ST_ERROR;
-        transitionFunction[ST_PLUS][CAT_SEMI] = ST_ERROR;
-        transitionFunction[ST_PLUS][CAT_DIV] = ST_ERROR;
-        transitionFunction[ST_PLUS][CAT_BKL] = ST_SKIP;
-        transitionFunction[ST_PLUS][CAT_WS] = ST_SKIP;
-        transitionFunction[ST_PLUS][CAT_ANY] = ST_ERROR;
+        transitionFunction[ST_SKIP][CAT_EOF] = ST_ERROR;
+        transitionFunction[ST_SKIP][CAT_LETTER] = ST_ERROR;
+        transitionFunction[ST_SKIP][CAT_DIGIT] = ST_ERROR;
+        transitionFunction[ST_SKIP][CAT_PLUS] = ST_ERROR;
+        transitionFunction[ST_SKIP][CAT_MULT] = ST_ERROR;
+        transitionFunction[ST_SKIP][CAT_EQ] = ST_ERROR;
+        transitionFunction[ST_SKIP][CAT_SEMI] = ST_ERROR;
+        transitionFunction[ST_SKIP][CAT_DIV] = ST_ERROR;
+        transitionFunction[ST_SKIP][CAT_BKL] = ST_SKIP;
+        transitionFunction[ST_SKIP][CAT_WS] = ST_SKIP;
+        transitionFunction[ST_SKIP][CAT_ANY] = ST_ERROR;
 
         // Transições do Estado EOF
         transitionFunction[ST_EOF][CAT_EOF] = ST_ERROR;
@@ -250,7 +250,7 @@ public class Scanner {
     }
 
     // Identifica qual a categoria do char lido
-    private int chatCat(int ch) {
+    private int charCat(int ch) {
         if(flag_eof){
             return CAT_EOF;
         }
@@ -326,8 +326,27 @@ public class Scanner {
         lexeme = lexeme.substring(0, lexeme.length() - 1);
     }
 
-    private void runAFD(int state) {
+    private void runAFD(int state) throws IOException {
 
+        // inicializa
+        lexeme = "";
+        stack.clear();
+        stack.push(ST_BAD);
+
+        // processa
+        char ch;
+        int category;
+
+        while(state != ST_ERROR) {
+            ch = nextChar();
+            lexeme = lexeme + ch;
+            stack.push(state);
+            category = charCat(ch);
+            state = transitionFunction[state][category];
+        }
+
+        // fez uma transição a mais
+        rollback();
     }
 
     public Token nextToken() {
