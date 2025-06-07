@@ -283,7 +283,16 @@ public class Scanner {
     }
 
     private boolean isFinal(int state){
+
+        if(state >= ST_VAR && state < ST_SKIP || state == ST_EOF){
+            return true;
+        }
+
         return false;
+    }
+
+    private boolean isSkip(int state){
+        return state == ST_SKIP;
     }
 
     private void runAFD(int state) {
