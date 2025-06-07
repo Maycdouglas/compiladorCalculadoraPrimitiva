@@ -296,12 +296,12 @@ public class Scanner {
     }
 
     private char nextChar() throws IOException{
-        int ch = file.read();
-        if(ch == -1) {
+        int ch = file.read(); // armazena o char lido como um inteiro
+        if(ch == -1) { //-1 representa o inteiro que o fim de um arquivo retorna
             flag_eof = true;
             return '\0';
         }
-        if(ch == 10) {
+        if(ch == 10) { // 10 é o valor do \n (quebra de linha) como inteiro no código ASCII
             line++;
             column = 0;
         } else {
@@ -310,6 +310,20 @@ public class Scanner {
 
         buffer.push(new CharInput((char) ch, line, column));
         return (char) ch;
+    }
+
+    // função para voltar um caractere no processo de leitura
+    private void rollback() throws IOException{
+
+        // obtem linha e coluna do caracter do topo da pilha, sem remove-lo
+        line = buffer.peek().line;
+        column = buffer.peek().column;
+
+        // insere o caracter do topo da linha de volta ao arquivo
+        file.unread(buffer.pop().ch);
+
+        // remove o ultimo caracter do lexeme, pois faz parte do lexeme atual
+        lexeme = lexeme.substring(0, lexeme.length() - 1);
     }
 
     private void runAFD(int state) {
