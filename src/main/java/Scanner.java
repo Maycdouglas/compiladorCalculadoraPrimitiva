@@ -349,14 +349,34 @@ public class Scanner {
         rollback();
     }
 
-    public Token nextToken() {
+    public Token nextToken() throws IOException {
+
+        if(flag_eof){
+            return new Token(Token.EOF, "", line, column);
+        }
+
         int state = ST_INIT;
-        runAFD(state);
+
+        do {
+            runAFD(state);
+        } while(isSkip(stack.peek()));
 
         state = stack.pop();
-        if(!isFinal(state) && state != ST_BAD){
 
+        while(!isFinal(state) && state != ST_BAD) {
+            state = stack.pop();
+            rollback();
         }
+
+        if(!isFinal(state)){
+            buffer.clear();
+            return new Token(Type[state - ST_VAR], lexeme, line, column);
+        } else {
+            System.out.println("Error: INVALID TOKEK AT LINE " + line + ", COLUMN " + column);
+            System.exit(1);
+        }
+
+        return null;
     }
 
 }
