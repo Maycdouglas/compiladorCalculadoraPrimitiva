@@ -1,3 +1,5 @@
+package compilador;
+
 public class Token {
 
     // static + final cria uma constante global

@@ -1,12 +1,12 @@
-// Analisador Léxico
-
-// Implementação dirigida por tabela
+package compilador;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PushbackInputStream;
 import java.util.Stack;
 
+// Analisador Léxico
+// Implementação dirigida por tabela
 public class Scanner {
 
 
@@ -33,7 +33,6 @@ public class Scanner {
     private boolean flag_eof = false;
 
     // Estados do automato
-
     private final int ST_INIT = 0; // estado inicial do autômato
     private final int ST_1 = 1;
     private final int ST_2 = 2;
@@ -51,7 +50,7 @@ public class Scanner {
 
     private final int ST_BAD = -2;
 
-    // Tipos de Token
+    // Tipos de compilador.Token
     private final int Type[] = {Token.VAR, Token.INT, Token.PLUS, Token.MULT, Token.EQ, Token.SEMI, Token.EOF};
 
     // Categorias
@@ -74,6 +73,9 @@ public class Scanner {
         file = new PushbackInputStream(new FileInputStream(path));
 
         buffer = new Stack<CharInput>();
+
+        // pilha para simular o automato
+        stack = new Stack<Integer>();
 
         // 13 estados (exceto o estado de erro e 11 terminais)
         transitionFunction = new int[13][11];
@@ -283,8 +285,7 @@ public class Scanner {
     }
 
     private boolean isFinal(int state){
-
-        if(state >= ST_VAR && state < ST_SKIP || state == ST_EOF){
+        if(state >= ST_VAR && state < ST_SKIP){
             return true;
         }
 
@@ -368,11 +369,11 @@ public class Scanner {
             rollback();
         }
 
-        if(!isFinal(state)){
+        if(isFinal(state)){
             buffer.clear();
             return new Token(Type[state - ST_VAR], lexeme, line, column);
         } else {
-            System.out.println("Error: INVALID TOKEK AT LINE " + line + ", COLUMN " + column);
+            System.out.println("Error: INVALID TOKEN AT LINE " + line + ", COLUMN " + column);
             System.exit(1);
         }
 
