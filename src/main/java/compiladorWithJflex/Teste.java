@@ -7,10 +7,10 @@ public class Teste {
 
     public static void main(String[] args) throws IOException {
         LextTest = new LextTest(new FileReader(args[0]));
-        Token t = lx.nextToken();
-        while(t != null){
-            System.out.println(t.toString());
-            t = lx.nextToken();
+        Token token = lx.nextToken();
+        while(token != null){
+            System.out.println(token.toString());
+            token = lx.nextToken();
         }
         System.out.println("Total de tokens lidos " + lx.readedTokens());
     }
