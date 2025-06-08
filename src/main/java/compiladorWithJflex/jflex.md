@@ -3,9 +3,14 @@
 As seções são separadas por `%%`.
 
 ## Comandos
-- `java -jar jflex-1.9.1.jar Exemplo.flex`
+- `java -jar jflex-full-1.9.1.jar Exemplo.jflex`
   - gera a classe do Analisador Léxico
-
+- Deve abrir o terminal na pasta que estará o arquivo jflex
+- Deve copiar a colar o arquivo .jar da pasta instalada no computador na pasta onde estiver o arquivo .jflex
+- `javac -d target/classes src/main/java/compiladorWithJflex/*.java`
+  - compila os arquivos
+- `java -cp target/classes compiladorWithJflex.Teste src/main/sample1.txt`
+  - executa o programa
 ## Seções
 ### Primeira Seção
 - É copiada antes da declaração da classe do analisador léxico. 
