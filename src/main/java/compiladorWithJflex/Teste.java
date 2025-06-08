@@ -6,7 +6,7 @@ import java.io.IOException;
 public class Teste {
 
     public static void main(String[] args) throws IOException {
-        LextTest = new LextTest(new FileReader(args[0]));
+        LextTest lx = new LextTest(new FileReader(args[0]));
         Token token = lx.nextToken();
         while(token != null){
             System.out.println(token.toString());

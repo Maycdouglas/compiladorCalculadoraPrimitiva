@@ -1,4 +1,5 @@
-
+package compiladorWithJflex;
+import compiladorWithJflex.Token;
  /*  Esta seção é copiada antes da declaração da classe do analisador léxico.
   *  É nesta seção que se deve incluir imports e declaração de pacotes.
   *  Neste exemplo não temos nada a incluir nesta seção.
@@ -18,6 +19,7 @@
     /* Código arbitrário pode ser inserido diretamente no analisador dessa forma.
      * Aqui podemos declarar variáveis e métodos adicionais que julgarmos necessários.
      */
+
     private int ntk;
 
     public int readedTokens(){

@@ -33,12 +33,20 @@ As seções são separadas por `%%`.
       - identificador = [:lowercase:]
       - letras = [:letter:]
       - maiusculas = [:upercase:]
+  - `%state NOME`: cria um novo estado
 ### Terceira Seção
 - `<YYNITIAL>{}`: É como se fosse um `if else`. 
-- Determina o que fazer de acordo com o token lido
-  - `{identificador}  {return symbol(TOKEN_TYPE.ID);}`
-  - `{numero} {return symbol(TOKEN_TYPE.NUM, Integer.parseInt(yytext()) );}`
-  - `"=" {return symbol(TOKEN_TYPE.EQ);}`
-  - `{Brancos} { /* Não faz nada */ }` 
+  - Determina o que fazer de acordo com o token lido
+    - `{identificador}  {return symbol(TOKEN_TYPE.ID);}`
+    - `{numero} {return symbol(TOKEN_TYPE.NUM, Integer.parseInt(yytext()) );}`
+    - `"=" {return symbol(TOKEN_TYPE.EQ);}`
+    - `{Brancos} { /* Não faz nada */ }` 
+    - `/* { yybegin(COMMENT); }`
+- `<COMMENT> {}`
+  - `"*/" { yybegin(YYNITIAL); }`
+    - se ler o `*/` deve voltar ao estado inicial
+  - `[^"*/"]* {  }`
+    - o `^` significa não
+    - se ler qualquer coisa diferente de `*/` deve fazer nada
 - `[^] {}`: é como se fosse um `else`
-- Determina o que fazer quando não encaixou com nenhum tipo anterior
+  - Determina o que fazer quando não encaixou com nenhum tipo anterior
